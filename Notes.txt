@@ -1,0 +1,27 @@
+- Cleaning the data.
+- Monthly salary vs education field
+  Monthly salary vs performance
+
+  Years at company vs martial status
+  Working hours vs martial status 
+
+  experience + total number of companies to get rate 
+
+  salary vs training 
+  
+  distance vs satisfaction
+  department vs attrition 
+  
+  gender vs workk life balance or vs total working hours 
+  gender vs business travel
+
+  age vs working hours
+  role vs working hours 
+
+  salary hike vs attrition or working hours or job involvement 
+  years last promo vs satisfaction
+
+  martial status vs travel  
+
+
+  
