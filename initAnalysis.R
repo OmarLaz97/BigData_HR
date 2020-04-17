@@ -1,7 +1,15 @@
 # clean environment 
 rm(list=ls())
+
+#install.packages("gridExtra")
+#install.packages("ggcorrplot")
+#install.packages("corrplot")
+
 # imports
 library(ggplot2)
+library(scales)
+library(gridExtra)
+library(corrplot)
 
 #Importing data from csv files and reading data into a data frame
 data <- read.csv("employee_data.csv")
@@ -15,6 +23,10 @@ head(data,10)
 tail(data,10)
 #Show summary of the dataframe
 summary(data)
+
+# Data with attrition is Yes and No
+dataNo <- data[data$Attrition == "No",]
+dataYes <- data[data$Attrition == "Yes",]
 
 # Simple visualization 
 # Attrition Rate
@@ -115,49 +127,134 @@ AverageWorkingHours <- AverageWorkingHours + geom_density(fill = "steelblue", co
 AverageWorkingHours
 
 
-###########################
-# Age vs Gender
-AgeVGender <- ggplot(data = data, aes(x = Gender, y = Age))
-AgeVGender <- AgeVGender + geom_boxplot(aes(fill = Gender))
-AgeVGender
-# Attrition Vs Age
-AttVAge <- ggplot(data=data, aes(x = Age))
-AttVAge <- AttVAge + geom_bar(aes(fill = Attrition)) 
-AttVAge
+######################## Attrition VS Categorical Data ########################
 # Attrition Vs Gender
-AttVGender <- ggplot(data = data, aes(Attrition))
-AttVGender <- AttVGender + geom_bar(aes(fill=Gender)) 
+AttVGender <- ggplot(data = data, aes(Attrition)) + geom_bar(aes(fill=Gender), position = "fill") 
 AttVGender
-# Attrition Vs Age & Gender
-AttVAgeAndGender <- ggplot(data = data, aes(x = Attrition, y = Age))
-AttVAgeAndGender <- AttVAgeAndGender + geom_boxplot(aes(fill = Gender))
-AttVAgeAndGender
-# BusinessTravel Vs Age & Gender
-TravelVAgeAndGender <- ggplot(data = data, aes(x = BusinessTravel, y = Age))
-TravelVAgeAndGender <- TravelVAgeAndGender + geom_boxplot(aes(fill = Gender))
-TravelVAgeAndGender
 # Attrition Vs BusinessTravel
-TravVAttr <- ggplot(data = data, aes(Attrition))
-TravVAttr <- TravVAttr + geom_bar(aes(fill = BusinessTravel)) 
+TravVAttr <- ggplot(data = data, aes(fill=Attrition, BusinessTravel)) + geom_bar(position="fill") 
 TravVAttr
-# DistanceFromHome and gender
-DistVGender <- ggplot(data = data, aes(DistanceFromHome))
-DistVGender <- DistVGender + geom_bar(aes(fill = Gender))
-DistVGender
-# Attrition Vs DistanceFromHome
-AttrVDist <- ggplot(data = data, aes(DistanceFromHome))
-AttrVDist <- AttrVDist + geom_bar(aes(fill = Attrition))
-AttrVDist
-# Attrition Vs DistanceFromHome, Gender
-AttVDistGender <- ggplot(data = data, aes(x = Attrition, y = DistanceFromHome))
-AttVDistGender <- AttVDistGender + geom_boxplot(aes(fill = Gender))
-AttVDistGender
+# Attrition Vs WorkLifeBalance
+BalanceVAttr <- ggplot(data = data, aes(fill=Attrition, WorkLifeBalance)) + geom_bar(position="fill") 
+BalanceVAttr
 # Attrition Vs Education
-AttrVEdu <- ggplot(data = data, aes(Education, fill=Attrition))
-AttrVEdu <- AttrVEdu + geom_bar(position=position_dodge())
+AttrVEdu <- ggplot(data = data, aes(Education, fill=Attrition)) + geom_bar(position = "fill")
 AttrVEdu
+# Attrition Vs Education Field
+AttrVEdu <- ggplot(data = data, aes(EducationField, fill=Attrition)) + geom_bar(position = "fill") 
+AttrVEdu
+# Attrition Vs JobLevel
+AttrVJL <- ggplot(data = data, aes(JobLevel, fill=Attrition)) + geom_bar(position = "fill")
+AttrVJL
+# Attrition Vs MaritalStatus
+AttrVStatus <- ggplot(data = data, aes(MaritalStatus, fill=Attrition)) + geom_bar(position = "fill")
+AttrVStatus
+# Attrition vs Dep
+AttVDep <- ggplot(data = data, aes(Department, fill = Attrition)) + geom_bar(position = "fill")
+AttVDep
+# Attrition vs JobRole
+AttVJR <- ggplot(data = data, aes(JobRole, fill = Attrition)) + geom_bar(position = "fill")
+AttVJR
+# Attrition vs Env Satisfaction
+AttVEnvSat <- ggplot(data = data, aes(EnvironmentSatisfaction, fill = Attrition)) + geom_bar(position = "fill")
+AttVEnvSat
+# Attrition vs Job satisfaction
+AttVJobSat <- ggplot(data = data, aes(JobSatisfaction, fill = Attrition)) + geom_bar(position = "fill")
+AttVJobSat
+######################## END of Attrition VS Categorical Data ########################
+
+######################## Attrition VS Continous Data ########################
+
+# Attrition VS Age
+AttVAge <- ggplot(data=data, aes(x = Age)) + geom_bar(aes(fill = Attrition)) 
+AttVAge
+# Attrition VS DistanceFromHome
+AttrVDist <- ggplot(data = data, aes(DistanceFromHome)) + geom_bar(aes(fill = Attrition), position = "fill")
+AttrVDist
+# Attrition VS Salary hike 
+AttVHike <- ggplot(data = data, aes(x = Attrition, y = data$PercentSalaryHike)) + geom_boxplot()
+AttVHike
+# Attrition VS (num of companies / totalyears)
+rateOfAttrition <- data$NumCompaniesWorked/data$TotalWorkingYears
+data$rateOfAttrition <- c(rateOfAttrition)
+AttrVRate <- ggplot(data = data, aes(x = Attrition ,y=rateOfAttrition)) + geom_boxplot()
+AttrVRate
+# Attrition vs Training times last year
+AttVTrain <- ggplot(data = data, aes(TrainingTimesLastYear, fill = Attrition)) + geom_bar(position = "fill")
+AttVTrain
+# Attrition vs TotalWorkingHours
+AttVWorkingHours <- ggplot(data = data, aes(AverageWorkingHours, color = Attrition)) + geom_density()
+AttVWorkingHours
+# Attrition VS Years With current manager
+AttVCurrManager <- ggplot(data = data, aes(YearsWithCurrManager, fill = Attrition)) + geom_bar(position = "fill")
+AttVCurrManager
+
+######################## END of Attrition VS Continous Data ########################
+
+######################## Experimental Insights ########################
+# Age vs Gender
+AgeVGender <- ggplot(data = data, aes(x = Gender, y = Age)) + geom_boxplot(aes(fill = Gender))
+AgeVGender
+# BusinessTravel Vs Age & Gender
+TravelVAgeAndGender <- ggplot(data = data, aes(x = BusinessTravel, y = Age)) + geom_boxplot(aes(fill = Gender))
+TravelVAgeAndGender
+# DistanceFromHome and gender
+DistVGender <- ggplot(data = data, aes(DistanceFromHome)) + geom_bar(aes(fill = Gender), position="fill")
+DistVGender
+# Attrition Vs DistanceFromHome, Gender
+AttVDistGender <- ggplot(data = data, aes(x = Attrition, y = DistanceFromHome)) + geom_boxplot(aes(fill = Gender))
+AttVDistGender
+# Attrition Vs Age & Gender
+AttVAgeAndGender <- ggplot(data = data, aes(x = Attrition, y = Age)) + geom_boxplot(aes(fill = Gender))
+AttVAgeAndGender
+# Monthly salary vs education field
+SalaryVEducationField <- ggplot(data = data, aes(x = EducationField ,y=MonthlyIncome)) + geom_boxplot()
+SalaryVEducationField
+# Monthly salary vs performance
+data$PerformanceRating <- as.factor(data$PerformanceRating)
+SalaryVPerf <- ggplot(data = data, aes(x = PerformanceRating ,y = MonthlyIncome)) + geom_boxplot()
+SalaryVPerf
+# Marital Status Vs Working Hours
+StatusVHours <- ggplot(data = data, aes(x = MaritalStatus ,y = AverageWorkingHours)) + geom_boxplot()
+StatusVHours
+# Business Travel VS Marital satuts Vs Attrition
+BusiVStatusNO <- ggplot(data = dataNo, aes(BusinessTravel)) + geom_bar(aes(fill = MaritalStatus), position = "fill")
+BusiVStatusYes <- ggplot(data = dataYes, aes(BusinessTravel)) + geom_bar(aes(fill = MaritalStatus), position = "fill")
+grid.arrange(BusiVStatusNO, BusiVStatusYes, ncol=2)
+# job Role and dep
+JRVDepNO <- ggplot(data = dataNo, aes(JobRole, fill = Department)) + geom_bar(position = "fill")
+JRVDepYes <- ggplot(data = dataYes, aes(JobRole, fill = Department)) + geom_bar(position = "fill")
+grid.arrange(JRVDepNO, JRVDepYes, ncol=2)
+# Job satisfaction with job role and department
+JRVDepVSatis <- ggplot(data = data, aes(x=interaction(JobRole, JobSatisfaction), fill = Department ))
+JRVDepVSatis <- JRVDepVSatis + geom_bar(position = "fill") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+JRVDepVSatis
+#JrVAttrVEdField
+JRVAttrVEdField <- ggplot(data = data, aes(x=interaction(EducationField, JobRole), fill = Attrition ))
+JRVAttrVEdField <- JRVAttrVEdField + geom_bar(position = "fill") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+JRVAttrVEdField
+# Education field vs dep
+EducFieldVDep <- ggplot(data = data, aes(EducationField, fill = Department))
+EducFieldVDep <- EducFieldVDep + geom_bar(position = "fill")
+EducFieldVDep
+######################## END of Experimental Insights ########################
 
 
+######################## Correlation ########################
+
+# Get All non cat data
+nonCatArr <- c("Age","DistanceFromHome","MonthlyIncome","PercentSalaryHike","rateOfAttrition","YearsSinceLastPromotion","YearsAtCompany","TrainingTimesLastYear","AverageWorkingHours")
+TempData <- data
+TempData$Age = as.numeric(NonCatData$Age)
+TempData$DistanceFromHome = as.numeric(NonCatData$DistanceFromHome)
+TempData$MonthlyIncome = as.numeric(NonCatData$MonthlyIncome)
+TempData$PercentSalaryHike = as.numeric(NonCatData$PercentSalaryHike)
+TempData$YearsSinceLastPromotion = as.numeric(NonCatData$YearsSinceLastPromotion)
+TempData$YearsAtCompany = as.numeric(NonCatData$YearsAtCompany)
+TempData$TrainingTimesLastYear = as.numeric(NonCatData$TrainingTimesLastYear)
 
 
+# Correlation matrix
+data$Attrition <- as.numeric(ifelse(data$Attrition == "Yes" , 1, 0))
+corMat <- cor(cbind(TempData[nonCatArr], TempData$Attrition))
 

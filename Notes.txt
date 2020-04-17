@@ -1,19 +1,19 @@
 - Cleaning the data.
-- Monthly salary vs education field
-  Monthly salary vs performance
+- Monthly salary vs education field - done
+  Monthly salary vs performance - done
 
-  Years at company vs martial status
-  Working hours vs martial status 
+  Years at company vs martial status  - done
+  Working hours vs martial status  - done
 
-  experience + total number of companies to get rate 
+  experience + total number of companies to get rate - done
 
   salary vs training 
   
   distance vs satisfaction
-  department vs attrition 
+  department vs attrition - done
   
   gender vs workk life balance or vs total working hours 
-  gender vs business travel
+  gender vs business travel - done
 
   age vs working hours
   role vs working hours 
@@ -21,7 +21,53 @@
   salary hike vs attrition or working hours or job involvement 
   years last promo vs satisfaction
 
-  martial status vs travel  
+  martial status vs travel -done
+  
+  ######## notes added by Fatma and Laz
+  Notes
+
+1. Males are younger than females
+2. Who said Yes are way less
+3. Travel rarely is so high, maybe this will contribute to the final insights 
+4. HR department has the minimum number of employees compared to the other departments (which is normL ya3ny)
+5. Majority are close to work
+6. Majority have an eduction of 3 which is good ya3ny
+7. Majority of education are in life science and medical, we can plot education field against department to see if people work in the appropriate field
+8. Males number is higher than females 25% higher masalan
+9. Job role and education and department and salary
+10. Majority are married -> beyesrefo aktar. status with gender, status with salary, status with job role, status with distance, status with age
+11. number of companies worked for is a reflection of experience, plot against salary, age, percent hike, maybe against attrition 
+12. total working years peaks at 10 years fa el mafroud adi el nas di salary kowayess 3ashan senohom akid kebir we experience mo7tarama
+13. Years at company 3adatan el nas mesh bet3adi el 10 senin, momken da yekoun be sabab el salary aw el job role aw el hike
+14. lazem akaren el years since last promotion bel job experience wel role wel education wel level 
+15. Years with current manager peaks fag2a men 5 le 10 senin, momken el nas di tekoun betet5ene2 masalan, fa neshouf el satisfaction wel salary wel role we hike ma3ahom el nas di
+16. environment satisfaction lazem neshouf el nas ely bet2oul 1 we 2, eh ely medaye2hom, salary, hike, job role, manager
+17. nafs el kalam ma3 el job satisfaction 
+18. el work life  balance, neshouf dol metgawezin wala la2, saknin be3id wala la2, salary kefaya enohom yefdalo a3din wala la2, 3amatan nas ketyr alet 3 we olayel ely 2al 1 bas maybe dol ely beyemsho mel shoghl
+19. job involvement dol momken nas tekoun meday2a enaha misplaced fel sherka we tekoun shayfa eneha fe makan tany hateb2a a7san bas mesh 3arfin yerou7o, aw men el nas ely environment meday2ahom, aw saknin be3id fa beywsalo ta3banin
+20. performance rating kolo ya 3 ya 4 which is weird ya3ny
+21. el nas ely beteshtaghal olayel bete3mel keda leih, el nas ely beteshtaghal ketyr hal heya beta5od salary kowayess wala la2, el nas ely beteshtaghal olayel momken yekouno saknin be3id masalan fa 3ashan yel7a2o yerawa7
+
+1. Males are younger shewaya mel females (aktar we asghar)
+2. Males ely 2alo yes asghar mel females
+3. Males 2eli 2alo yes aktar mel females (bas maybe kol da 3ashan bas el males fel sherka aktar mel females)
+4. Males and females 2eli meshyo men el shoghl asghar men ely a3ado, maybe la2o foras a7san aw makanoush mabsoutin 
+5. business travel: el nas ely betsafer frequently heya ely betemshy aktar
+6. business travel maloush 3elaka awy bel age wel gender, Check the boxplot
+7. 7ases en el business travel maloush 3elaka awy bel attrition 3ashan men el plot bayen en el percentages heya heya fel yes wel no
+8. El distance from home metwaza3a ta2riban equally bein el males wel females, mafish 7ad aktar men el tany bas bein dist 20 we 30 ely heya el max el females aktar fa maybe dol beyetday2o 
+9. el females ely 2alo yes nesba menhom saknin be3id
+10. Attrition and education lewa7dohom mesh mofidin awy me7tagin data zeyada
+11. el Nas el single betemshy aktar
+12. HR beyekraho el shoghl wel mowzafin el henoud 3ashan mesh beyesta7amo
+13. El nas el single ely bey2oulo No mesh fare2 ma3ahom el travel frequency, laken ely 2alo Yes kan fare2 ma3ahom el travel, fa aktar nas meshyet menhom kanet el nas ely kanet Non-travelers 
+14. HR aktar department el nas betemshy meno 
+15. Fih job roles 3agiba gowa el HR we dol homa aktar nas betemshy
+16. sales rep ely beyo3odo fel Research beyemsho
+17. Healthcare ely beyo3odo fel sales we hr beyemsho
+18. Avg working hours mohema fash5
+19. 
+
 
 
   
