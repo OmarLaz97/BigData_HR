@@ -75,11 +75,11 @@ StockOptionLevel <- StockOptionLevel + geom_bar(fill = "steelblue", color ="stee
 StockOptionLevel
 # TotalWorkingYears
 TotalWorkingYears <- ggplot(data = data, aes(TotalWorkingYears))
-TotalWorkingYears <- TotalWorkingYears + geom_density(fill = "steelblue", color ="steelblue") 
+TotalWorkingYears <- TotalWorkingYears + geom_bar(fill = "steelblue", color ="steelblue") 
 TotalWorkingYears
 # YearsAtCompany
 YearsAtCompany <- ggplot(data = data, aes(YearsAtCompany))
-YearsAtCompany <- YearsAtCompany + geom_density(fill = "steelblue", color ="steelblue") 
+YearsAtCompany <- YearsAtCompany + geom_bar(fill = "steelblue", color ="steelblue") 
 YearsAtCompany
 # YearsSinceLastPromotion
 YearsSinceLastPromotion <- ggplot(data = data, aes(YearsSinceLastPromotion))
@@ -87,7 +87,7 @@ YearsSinceLastPromotion <- YearsSinceLastPromotion + geom_density(fill = "steelb
 YearsSinceLastPromotion
 # YearsWithCurrManager
 YearsWithCurrManager <- ggplot(data = data, aes(YearsWithCurrManager))
-YearsWithCurrManager <- YearsWithCurrManager + geom_density(fill = "steelblue", color ="steelblue") 
+YearsWithCurrManager <- YearsWithCurrManager + geom_bar(fill = "steelblue", color ="steelblue") 
 YearsWithCurrManager
 # EnvironmentSatisfaction
 EnvironmentSatisfaction <- ggplot(data = data, aes(EnvironmentSatisfaction))
@@ -122,7 +122,7 @@ AgeVGender <- AgeVGender + geom_boxplot(aes(fill = Gender))
 AgeVGender
 # Attrition Vs Age
 AttVAge <- ggplot(data=data, aes(x = Age))
-AttVAge <- AttVAge + geom_density(aes(color = Attrition)) 
+AttVAge <- AttVAge + geom_bar(aes(fill = Attrition)) 
 AttVAge
 # Attrition Vs Gender
 AttVGender <- ggplot(data = data, aes(Attrition))
@@ -142,11 +142,11 @@ TravVAttr <- TravVAttr + geom_bar(aes(fill = BusinessTravel))
 TravVAttr
 # DistanceFromHome and gender
 DistVGender <- ggplot(data = data, aes(DistanceFromHome))
-DistVGender <- DistVGender + geom_density(aes(color = Gender))
+DistVGender <- DistVGender + geom_bar(aes(fill = Gender))
 DistVGender
 # Attrition Vs DistanceFromHome
 AttrVDist <- ggplot(data = data, aes(DistanceFromHome))
-AttrVDist <- AttrVDist + geom_density(aes(color = Attrition))
+AttrVDist <- AttrVDist + geom_bar(aes(fill = Attrition))
 AttrVDist
 # Attrition Vs DistanceFromHome, Gender
 AttVDistGender <- ggplot(data = data, aes(x = Attrition, y = DistanceFromHome))
