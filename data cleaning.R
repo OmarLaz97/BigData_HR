@@ -16,11 +16,15 @@ hours<-as.data.frame(hours)
 hours[is.na(hours)] <- 0
 avgHrs<-rowMeans(hours)
 
+#rate of attrition for each employee (NumCompWorked/TotalWorkingYears)
+rateOfAttrition <- ifelse(generalData$TotalWorkingYears==0 , 0, generalData$NumCompaniesWorked/generalData$TotalWorkingYears)
+
 #removing unnecessary columns
 generalData<-generalData[ , !(names(generalData) %in% c("Over18", "StandardHours","EmployeeCount"))]
 
 employeeData<-merge(generalData,employeeSurvey,by="EmployeeID")
 employeeData<-merge(employeeData,managerSurvey, by="EmployeeID")
 employeeData$AverageWorkingHours<-avgHrs
+employeeData$rateOfAttrition<-rateOfAttrition
 employeeData<-employeeData[complete.cases(employeeData), ]
 write.csv(employeeData,"employee_data.csv")

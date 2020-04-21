@@ -174,9 +174,7 @@ AttrVDist
 # Attrition VS Salary hike 
 AttVHike <- ggplot(data = data, aes(x = Attrition, y = data$PercentSalaryHike)) + geom_boxplot()
 AttVHike
-# Attrition VS (num of companies / totalyears)
-rateOfAttrition <- data$NumCompaniesWorked/data$TotalWorkingYears
-data$rateOfAttrition <- c(rateOfAttrition)
+# Attrition VS rateOfAttrition(num of companies / totalyears)
 AttrVRate <- ggplot(data = data, aes(x = Attrition ,y=rateOfAttrition)) + geom_boxplot()
 AttrVRate
 # Attrition vs Training times last year
@@ -238,23 +236,4 @@ EducFieldVDep <- ggplot(data = data, aes(EducationField, fill = Department))
 EducFieldVDep <- EducFieldVDep + geom_bar(position = "fill")
 EducFieldVDep
 ######################## END of Experimental Insights ########################
-
-
-######################## Correlation ########################
-
-# Get All non cat data
-nonCatArr <- c("Age","DistanceFromHome","MonthlyIncome","PercentSalaryHike","rateOfAttrition","YearsSinceLastPromotion","YearsAtCompany","TrainingTimesLastYear","AverageWorkingHours")
-TempData <- data
-TempData$Age = as.numeric(NonCatData$Age)
-TempData$DistanceFromHome = as.numeric(NonCatData$DistanceFromHome)
-TempData$MonthlyIncome = as.numeric(NonCatData$MonthlyIncome)
-TempData$PercentSalaryHike = as.numeric(NonCatData$PercentSalaryHike)
-TempData$YearsSinceLastPromotion = as.numeric(NonCatData$YearsSinceLastPromotion)
-TempData$YearsAtCompany = as.numeric(NonCatData$YearsAtCompany)
-TempData$TrainingTimesLastYear = as.numeric(NonCatData$TrainingTimesLastYear)
-
-
-# Correlation matrix
-data$Attrition <- as.numeric(ifelse(data$Attrition == "Yes" , 1, 0))
-corMat <- cor(cbind(TempData[nonCatArr], TempData$Attrition))
 
