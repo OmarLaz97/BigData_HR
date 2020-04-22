@@ -1,4 +1,5 @@
 library(ROCR)
+library("fastDummies")
 
 # clean environment 
 rm(list=ls())
@@ -13,16 +14,16 @@ nonCatArr <- c("Age","DistanceFromHome","MonthlyIncome","PercentSalaryHike", "Nu
 "TotalWorkingYears", "YearsSinceLastPromotion","YearsAtCompany", "YearsWithCurrManager", 
 "TrainingTimesLastYear","AverageWorkingHours")
 
+CatArray <- c("BusinessTravel", "Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
+
+
 TempData <- data
 
 #Set Attrition Yes or No to 1 or 0
 TempData$Attrition <- as.numeric(ifelse(TempData$Attrition == "Yes" , 1, 0))
 
-#Convert All categorical Data to numbers
-TempData<-data.matrix(TempData)
-TempData <- as.data.frame(TempData)
+TempData <- dummy_cols(TempData, select_columns = CatArray, remove_first_dummy = TRUE, remove_selected_columns = TRUE)
 
-#factor(TempData$BusinessTravel)
 
 # Correlation matrix
 corMat <- cor(cbind(TempData[nonCatArr], TempData$Attrition))
@@ -35,8 +36,8 @@ corrplot.mixed(corMat, upper = "ellipse", tl.cex = 0.40, tl.pos = 'd')
 corMat <- cor(TempData[ , !(names(TempData) %in% c("Attrition"))])
 summary(corMat)
 
-trainingSet <- head(data, 3010)
-testSet <- tail(data, nrow(data)-3010)
+trainingSet <- head(TempData, 3010)
+testSet <- tail(TempData, nrow(TempData)-3010)
 
 mylogit <- glm(Attrition ~.,
                data =trainingSet, family=binomial(link="logit"),
