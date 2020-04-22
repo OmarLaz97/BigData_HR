@@ -1,5 +1,6 @@
 library(ROCR)
-library("fastDummies")
+library(corrplot)
+library(fastDummies)
 
 # clean environment 
 rm(list=ls())
@@ -14,13 +15,18 @@ nonCatArr <- c("Age","DistanceFromHome","MonthlyIncome","PercentSalaryHike", "Nu
 "TotalWorkingYears", "YearsSinceLastPromotion","YearsAtCompany", "YearsWithCurrManager", 
 "TrainingTimesLastYear","AverageWorkingHours")
 
-CatArray <- c("BusinessTravel", "Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
+# Categorical data to transform to n-1 variables
+CatArray <- c("Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
 
 
 TempData <- data
 
 #Set Attrition Yes or No to 1 or 0
 TempData$Attrition <- as.numeric(ifelse(TempData$Attrition == "Yes" , 1, 0))
+
+
+#Set Busniess Travel to 0: No travel, 1: rarely, 2: frequently
+TempData$BusinessTravel <- ifelse(TempData$BusinessTravel == "Non-Travel", 0, ifelse(TempData$BusinessTravel == "Travel_Rarely", 1, 2))
 
 TempData <- dummy_cols(TempData, select_columns = CatArray, remove_first_dummy = TRUE, remove_selected_columns = TRUE)
 
@@ -34,6 +40,7 @@ corrplot.mixed(corMat, upper = "ellipse", tl.cex = 0.40, tl.pos = 'd')
 # we have 4300 rows: 3010 (70%) training and the rest for testing 
 # Logistic Regression
 corMat <- cor(TempData[ , !(names(TempData) %in% c("Attrition"))])
+corrplot.mixed(corMat, upper = "ellipse", tl.cex = 0.40, tl.pos = 'd')
 summary(corMat)
 
 trainingSet <- head(TempData, 3010)
