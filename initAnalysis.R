@@ -240,21 +240,3 @@ EducFieldVDep
 ######################## END of Experimental Insights ########################
 
 
-######################## Correlation ########################
-
-# Get All non cat data
-nonCatArr <- c("Age","DistanceFromHome","MonthlyIncome","PercentSalaryHike","rateOfAttrition","YearsSinceLastPromotion","YearsAtCompany","TrainingTimesLastYear","AverageWorkingHours")
-TempData <- data
-TempData$Age = as.numeric(NonCatData$Age)
-TempData$DistanceFromHome = as.numeric(NonCatData$DistanceFromHome)
-TempData$MonthlyIncome = as.numeric(NonCatData$MonthlyIncome)
-TempData$PercentSalaryHike = as.numeric(NonCatData$PercentSalaryHike)
-TempData$YearsSinceLastPromotion = as.numeric(NonCatData$YearsSinceLastPromotion)
-TempData$YearsAtCompany = as.numeric(NonCatData$YearsAtCompany)
-TempData$TrainingTimesLastYear = as.numeric(NonCatData$TrainingTimesLastYear)
-
-
-# Correlation matrix
-data$Attrition <- as.numeric(ifelse(data$Attrition == "Yes" , 1, 0))
-corMat <- cor(cbind(TempData[nonCatArr], TempData$Attrition))
-
