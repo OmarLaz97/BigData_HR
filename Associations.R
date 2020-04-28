@@ -20,31 +20,32 @@ data$AverageWorkingHours<-cut(data$AverageWorkingHours, c(workingHours["Min."],w
 Age<-summary(data$Age)
 data$Age<-cut(data$Age, c(Age["Min."],Age["1st Qu."],Age["3rd Qu."],Age["Max."]))
 
-#distance from home (NAs)
+#distance from home 
 Distance<-summary(data$DistanceFromHome)
-#data$DistanceFromHome<-cut(data$DistanceFromHome, c(Distance["Min."],Distance["Median"],Distance["Max."]))
+data$DistanceFromHome<-discretize(data$DistanceFromHome,method = "cluster")
 
-#number of companies worked for(NAS)
+#number of companies worked for
 Companies<-summary(data$NumCompaniesWorked)
-#data$NumCompaniesWorked<-cut(data$NumCompaniesWorked, c(Companies["Min."],Companies["Median"],Companies["Max."]), labels = c("<2",">2"))
+data$NumCompaniesWorked<-discretize(data$NumCompaniesWorked,method = "cluster")
 
 #years at company
 yearsCompany<-summary(data$YearsAtCompany)
-#data$YearsAtCompany<-cut(data$YearsAtCompany, c(yearsCompany["Min."],yearsCompany["1st Qu."],yearsCompany["3rd Qu."],yearsCompany["Max."]))
+data$YearsAtCompany<-discretize(data$YearsAtCompany,method = "cluster")
 
 #years with current manager
 yearsManager<-summary(data$YearsWithCurrManager)
-#data$YearsWithCurrManager<-cut(data$YearsWithCurrManager, c(yearsManager["Min."],yearsManager["1st Qu."],yearsManager["3rd Qu."],yearsManager["Max."]))
+data$YearsWithCurrManager<-discretize(data$YearsWithCurrManager,method = "cluster")
+
 
 assocData<-data
-assocData[,c("EmployeeID","YearsWithCurrManager","YearsAtCompany","distance from home","NumCompaniesWorked","PercentSalaryHike","StockOptionLevel","Department")]<-list(NULL)
+assocData[,c("EmployeeID","YearsWithCurrManager","PercentSalaryHike","StockOptionLevel","Department")]<-list(NULL)
 
 
-names <- c(1:21)
+names <- c(1:22)
 assocData[,names] <- lapply(assocData[,names] , factor)
 transactions<-as(assocData,"transactions")
 #inspect(transactions)
-rules<-apriori(transactions, parameter = list(supp = 0.1,minlen=3, conf = 0.5, target = "rules"))
+rules<-apriori(transactions, parameter = list(supp = 0.05,minlen=3, conf = 0.5, target = "rules"))
 #inspect(rules)
 support<-head(sort(rules, by="support"),6)
 #inspect(support)
