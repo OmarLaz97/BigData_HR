@@ -1,9 +1,9 @@
 # clean environment 
 rm(list=ls())
 
-#install.packages("gridExtra")
-#install.packages("ggcorrplot")
-#install.packages("corrplot")
+install.packages("gridExtra")
+install.packages("ggcorrplot")
+install.packages("corrplot")
 
 # imports
 library(ggplot2)
@@ -33,6 +33,11 @@ dataYes <- data[data$Attrition == "Yes",]
 Attrition <- ggplot(data = data, aes(Attrition)) 
 Attrition <- Attrition + geom_bar(fill = "steelblue", color ="steelblue") 
 Attrition
+# Age 
+Age <- ggplot(data = data, aes(Age))
+Age <- Age + geom_bar(fill = "steelblue", color ="steelblue") 
+Age
+
 # Business Travel
 BTravel <- ggplot(data = data, aes(BusinessTravel))
 BTravel <- BTravel + geom_bar(fill = "steelblue", color ="steelblue") 
@@ -70,6 +75,9 @@ MaritalStatus <- ggplot(data = data, aes(MaritalStatus))
 MaritalStatus <- MaritalStatus + geom_bar(fill = "steelblue", color ="steelblue") 
 MaritalStatus
 # MonthlyIncome
+
+
+
 MonthlyIncome <- ggplot(data = data, aes(MonthlyIncome))
 MonthlyIncome <- MonthlyIncome + geom_density(fill = "steelblue", color ="steelblue")
 MonthlyIncome
@@ -129,7 +137,7 @@ AverageWorkingHours
 
 ######################## Attrition VS Categorical Data ########################
 # Attrition Vs Gender
-AttVGender <- ggplot(data = data, aes(Attrition)) + geom_bar(aes(fill=Gender), position = "fill") 
+AttVGender <- ggplot(data = data, aes(fill=Attrition, Gender)) + geom_bar(position="fill") 
 AttVGender
 # Attrition Vs BusinessTravel
 TravVAttr <- ggplot(data = data, aes(fill=Attrition, BusinessTravel)) + geom_bar(position="fill") 
@@ -166,7 +174,7 @@ AttVJobSat
 ######################## Attrition VS Continous Data ########################
 
 # Attrition VS Age
-AttVAge <- ggplot(data=data, aes(x = Age)) + geom_bar(aes(fill = Attrition)) 
+AttVAge <- ggplot(data=data, aes(x = Age)) + geom_bar(aes(fill = Attrition),position = "fill") 
 AttVAge
 # Attrition VS DistanceFromHome
 AttrVDist <- ggplot(data = data, aes(DistanceFromHome)) + geom_bar(aes(fill = Attrition), position = "fill")
@@ -237,6 +245,66 @@ JRVAttrVEdField
 EducFieldVDep <- ggplot(data = data, aes(EducationField, fill = Department))
 EducFieldVDep <- EducFieldVDep + geom_bar(position = "fill")
 EducFieldVDep
+
+
+dataYes$JobSatisfaction <- as.factor(dataYes$JobSatisfaction)
+dataYes$EnvironmentSatisfaction <- as.factor(dataYes$EnvironmentSatisfaction)
+
+singleTravelWithJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Single", ], aes(BusinessTravel, fill = JobSatisfaction)) + geom_bar(position = "fill")
+singleTravelWithJS
+
+singleTravelWithEnvS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Single", ], aes(BusinessTravel, fill = EnvironmentSatisfaction)) + geom_bar(position = "fill")
+singleTravelWithEnvS
+
+FemalesWithDistanceAndEnvS <- ggplot(data = dataYes[dataYes$Gender == "Female" , ], aes(DistanceFromHome, color = EnvironmentSatisfaction)) + geom_boxplot()
+FemalesWithDistanceAndEnvS
+
+FemalesSingleAndJS <- ggplot(data = dataYes[dataYes$Gender == "Female" & dataYes$MaritalStatus == "Single", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
+FemalesSingleAndJS
+
+FemalesMarriedAndJS <- ggplot(data = dataYes[dataYes$Gender == "Female" & dataYes$MaritalStatus == "Married", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
+FemalesMarriedAndJS
+
+FemalesDivorcedAndJS <- ggplot(data = dataYes[dataYes$Gender == "Female" & dataYes$MaritalStatus == "Divorced", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
+FemalesDivorcedAndJS
+
+MarriedMalesAndincomeAndJS <- ggplot(data = dataYes[dataYes$Gender == "Male" & dataYes$MaritalStatus == "Married", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
+MarriedMalesAndincomeAndJS
+
+MarriedAndincomeAndJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Married", ], aes(MonthlyIncome, color = JobSatisfaction)) + geom_boxplot()
+MarriedAndincomeAndJS
+
+SingleAndincomeAndJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Single", ], aes(MonthlyIncome, color = JobSatisfaction)) + geom_boxplot()
+SingleAndincomeAndJS
+
+DivorcedAndincomeAndJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Divorced", ], aes(MonthlyIncome, color = JobSatisfaction)) + geom_boxplot()
+DivorcedAndincomeAndJS
+
+
+## Leih el HR beyemshy
+
+MonthlyIncomeVSDep <- ggplot(data = dataYes, aes(MonthlyIncome, color = Department)) + geom_boxplot()
+MonthlyIncomeVSDep
+
+MonthlyIncomeVSEduField <- ggplot(data = dataYes, aes(MonthlyIncome, color = EducationField)) + geom_boxplot()
+MonthlyIncomeVSEduField
+
+DepVSJobSatis <- ggplot(data = dataYes, aes(JobSatisfaction, fill = Department)) + geom_bar(position = "fill")
+DepVSJobSatis
+
+DepVSEnvSatis <- ggplot(data = dataYes, aes(EnvironmentSatisfaction, fill = Department)) + geom_bar(position = "fill")
+DepVSEnvSatis
+
+
+HRDepVSMaritalStatusAndGender <- ggplot(data = dataYes[dataYes$Department == "Human Resources",], aes(MaritalStatus, fill = Gender)) + geom_bar()
+HRDepVSMaritalStatusAndGender
+
+SingleHRDepVsTravel <- ggplot(data = dataYes[dataYes$Department == "Human Resources" & dataYes$MaritalStatus == "Single",], aes(BusinessTravel)) + geom_bar()
+SingleHRDepVsTravel
+
+
+HRDepVSAvgWorkingHrs <- ggplot(data = dataYes[dataYes$Department == "Human Resources",], aes(AverageWorkingHours)) + geom_density()
+HRDepVSAvgWorkingHrs
 ######################## END of Experimental Insights ########################
 
 
