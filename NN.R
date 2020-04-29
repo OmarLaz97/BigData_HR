@@ -55,11 +55,14 @@ testSet <- tail(scaled.data, nrow(TempData)-3010)
 
 
 set.seed(2)
+sigmoid = function(x) {
+  1 / (1 + exp(-x))
+}
 NN = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
-                  JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 2 ,linear.output = T )
+                  JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 2 ,linear.output = T, act.fct = sigmoid, stepmax = 1e+06)
 
 NN2 = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
-                  JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir, trainingSet, hidden = 3,stepmax = 1e+06 ,linear.output = T )
+                   JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 3,stepmax = 1e+06 ,linear.output = T )
 
 newdata1 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
 newdata1$Attrition <- predict (NN,newdata=newdata1,type="response")
@@ -74,7 +77,7 @@ accuracy
 
 
 newdata2 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
-newdata2$Attrition <- predict (NN2,newdata=newdata1,type="response")
+newdata2$Attrition <- predict (NN2,newdata=newdata2,type="response")
 
 newdata2$Attrition <- factor(ifelse(newdata2$Attrition >= 0.5, 1, 0))
 
