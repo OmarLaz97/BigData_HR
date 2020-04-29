@@ -14,6 +14,10 @@ data <- read.csv("employee_data.csv")
 CatArray <- c("Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
 
 TempData <- data
+rows <- sample(nrow(TempData))
+
+# Randomly order data
+TempData <- TempData[rows, ]
 
 TempData <- TempData[-c(1)]
 
@@ -55,7 +59,7 @@ NN = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFrom
                   JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 2 ,linear.output = T )
 
 NN2 = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
-                  JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir, trainingSet, hidden = 3 ,linear.output = T )
+                  JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir, trainingSet, hidden = 3,stepmax = 1e+06 ,linear.output = T )
 
 newdata1 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
 newdata1$Attrition <- predict (NN,newdata=newdata1,type="response")
