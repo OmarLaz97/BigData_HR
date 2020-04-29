@@ -5,7 +5,6 @@ library(fastDummies)
 library(MASS)
 library(car)
 library(neuralnet)
-library(tidyverse)
 rm(list=ls())
 
 
@@ -24,7 +23,7 @@ TempData$Attrition <- as.numeric(ifelse(TempData$Attrition == "Yes" , 1, 0))
 
 #Set Busniess Travel to 0: No travel, 1: rarely, 2: frequently
 TempData$BusinessTravel <- ifelse(TempData$BusinessTravel == "Non-Travel", 0, ifelse(TempData$BusinessTravel == "Travel_Rarely", 1, 2))
-#EducFieldScience+EducFieldMarketing+EducFieldMed+EducFieldOther+JobRoleRepresent+EducFieldTech+JobRoleExec+JobRoleResScienr+JobRoleHR+JobRoleLabTech+JobRoleManager+JobRoleRdir+JobRoleManDir
+#EducFieldScience+EducFieldMarketing+EducFieldMed+EducFieldOther+EducFieldTech+EducFieldTech+JobRoleExec+JobRoleResScienr+JobRoleHR+JobRoleLabTech+JobRoleManager+JobRoleRdir+JobRoleManDir
 TempData <- dummy_cols(TempData, select_columns = CatArray, remove_first_dummy = TRUE, remove_selected_columns = TRUE)
 names(TempData)[names(TempData)=="Department_Research & Development"]<-"DepRes"
 names(TempData)[names(TempData)=="EducationField_Life Sciences"]<-"EducFieldScience"
@@ -34,17 +33,9 @@ names(TempData)[names(TempData)=="JobRole_Research Director"]<-"JobRoleRdir"
 names(TempData)[names(TempData)=="JobRole_Manufacturing Director"]<-"JobRoleManDir"
 names(TempData)[names(TempData)=="EducationField_Medical"]<-"EducFieldMed"
 names(TempData)[names(TempData)=="EducationField_Other"]<-"EducFieldOther"
-names(TempData)[names(TempData)=="EducationField_Technical Degree"]<-"EducFieldTech"
-
-
 names(TempData)[names(TempData)=="JobRole_Human Resources"]<-"JobRoleHR"
-names(TempData)[names(TempData)=="JobRole_Laboratory Technician"]<-"JobRoleLabTech"
-names(TempData)[names(TempData)=="JobRole_Manager"]<-"JobRoleManager"
 
 
-names(TempData)[names(TempData)=="JobRole_Research Scientist"]<-"JobRoleResScienr"
-names(TempData)[names(TempData)=="JobRole_Sales Executive"]<-"JobRoleExec"
-names(TempData)[names(TempData)==" JobRole_Sales Representative"]<-"JobRoleRepresent"
 
 
 # we have 4300 rows: 3010 (70%) training and the rest for testing 
@@ -61,6 +52,9 @@ testSet <- tail(scaled.data, nrow(TempData)-3010)
 
 set.seed(2)
 NN = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
+                  JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 2 ,linear.output = T )
+
+NN2 = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
                   JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir, trainingSet, hidden = 3 ,linear.output = T )
 
 newdata1 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
@@ -69,6 +63,18 @@ newdata1$Attrition <- predict (NN,newdata=newdata1,type="response")
 newdata1$Attrition <- factor(ifelse(newdata1$Attrition >= 0.5, 1, 0))
 
 confusionMatrix <- table( newdata1$Attrition, testSet$Attrition)
+confusionMatrix
+
+accuracy <- 100*(sum(diag(confusionMatrix))/sum(confusionMatrix))
+accuracy
+
+
+newdata2 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
+newdata2$Attrition <- predict (NN2,newdata=newdata1,type="response")
+
+newdata2$Attrition <- factor(ifelse(newdata2$Attrition >= 0.5, 1, 0))
+
+confusionMatrix <- table( newdata2$Attrition, testSet$Attrition)
 confusionMatrix
 
 accuracy <- 100*(sum(diag(confusionMatrix))/sum(confusionMatrix))
