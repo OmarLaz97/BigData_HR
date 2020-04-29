@@ -15,6 +15,15 @@ CatArray <- c("Department", "EducationField", "Gender", "JobRole", "MaritalStatu
 
 TempData <- data
 
+# Set seed
+set.seed(42)
+
+# Shuffle row indices: rows
+rows <- sample(nrow(TempData))
+
+# Randomly order data
+TempData <- TempData[rows, ]
+
 TempData <- TempData[-c(1)]
 
 #Set Attrition Yes or No to 1 or 0
