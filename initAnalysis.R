@@ -225,22 +225,8 @@ SalaryVPerf
 # Marital Status Vs Working Hours
 StatusVHours <- ggplot(data = data, aes(x = MaritalStatus ,y = AverageWorkingHours)) + geom_boxplot()
 StatusVHours
-# Business Travel VS Marital satuts Vs Attrition
-BusiVStatusNO <- ggplot(data = dataNo, aes(BusinessTravel)) + geom_bar(aes(fill = MaritalStatus), position = "fill")
-BusiVStatusYes <- ggplot(data = dataYes, aes(BusinessTravel)) + geom_bar(aes(fill = MaritalStatus), position = "fill")
-grid.arrange(BusiVStatusNO, BusiVStatusYes, ncol=2)
-# job Role and dep
-JRVDepNO <- ggplot(data = dataNo, aes(JobRole, fill = Department)) + geom_bar(position = "fill")
-JRVDepYes <- ggplot(data = dataYes, aes(JobRole, fill = Department)) + geom_bar(position = "fill")
-grid.arrange(JRVDepNO, JRVDepYes, ncol=2)
-# Job satisfaction with job role and department
-JRVDepVSatis <- ggplot(data = data, aes(x=interaction(JobRole, JobSatisfaction), fill = Department ))
-JRVDepVSatis <- JRVDepVSatis + geom_bar(position = "fill") + theme(axis.text.x = element_text(angle = 45, hjust = 1))
-JRVDepVSatis
-#JrVAttrVEdField
-JRVAttrVEdField <- ggplot(data = data, aes(x=interaction(EducationField, JobRole), fill = Attrition ))
-JRVAttrVEdField <- JRVAttrVEdField + geom_bar(position = "fill") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-JRVAttrVEdField
+
+
 # Education field vs dep
 EducFieldVDep <- ggplot(data = data, aes(EducationField, fill = Department))
 EducFieldVDep <- EducFieldVDep + geom_bar(position = "fill")
@@ -276,43 +262,33 @@ YearsVsIncome
 
 ### ma3anaaaaaaaaa ###
 
-MarriedMalesAndincomeAndJS <- ggplot(data = dataYes[dataYes$Gender == "Male" & dataYes$MaritalStatus == "Married", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
-MarriedMalesAndincomeAndJS
+# elli alo yes el HR a2al average laken elli 2alo No mafeesh far2 awi been el data 
+MonthlyIncomeVSDep <- ggplot(data = dataYes, aes(y= MonthlyIncome,x=Department, color = Department)) + geom_boxplot()
+MonthlyIncomeVSDep+stat_summary(fun.y=mean, geom="point", shape=20, size=3, color="red", fill="red")
 
-MarriedAndincomeAndJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Married", ], aes(MonthlyIncome, color = JobSatisfaction)) + geom_boxplot()
-MarriedAndincomeAndJS
+MonthlyIncomeVSDep <- ggplot(data = dataNo, aes(y= MonthlyIncome,x=Department, color = Department)) + geom_boxplot()
+MonthlyIncomeVSDep+stat_summary(fun.y=mean, geom="point", shape=20, size=3, color="red", fill="red")
 
-SingleAndincomeAndJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Single", ], aes(MonthlyIncome, color = JobSatisfaction)) + geom_boxplot()
-SingleAndincomeAndJS
 
-DivorcedAndincomeAndJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Divorced", ], aes(MonthlyIncome, color = JobSatisfaction)) + geom_boxplot()
-DivorcedAndincomeAndJS
+MonthlyIncomeVSRole <- ggplot(data = dataYes, aes(y= MonthlyIncome,x=JobRole, color = JobRole)) + geom_boxplot()
+MonthlyIncomeVSRole+stat_summary(fun.y=mean, geom="point", shape=20, size=3, color="red", fill="red")
+
+MonthlyIncomeVSRole <- ggplot(data = dataNo, aes(y= MonthlyIncome,x=JobRole, color = JobRole)) + geom_boxplot()
+MonthlyIncomeVSRole+stat_summary(fun.y=mean, geom="point", shape=20, size=3, color="red", fill="red")
+
 
 
 ## Leih el HR beyemshy
 
-MonthlyIncomeVSDep <- ggplot(data = dataYes, aes(MonthlyIncome, color = Department)) + geom_boxplot()
-MonthlyIncomeVSDep
+HRYDepVSAvgWorkingHrs <- ggplot(data = dataYes[dataYes$Department == "Human Resources",], aes(AverageWorkingHours)) + geom_density()
+HRYDepVSAvgWorkingHrs
 
-MonthlyIncomeVSEduField <- ggplot(data = dataYes, aes(MonthlyIncome, color = EducationField)) + geom_boxplot()
-MonthlyIncomeVSEduField
+HRNDepVSAvgWorkingHrs <- ggplot(data = dataNo[dataNo$Department == "Human Resources",], aes(AverageWorkingHours)) + geom_density()
+HRNDepVSAvgWorkingHrs
 
-DepVSJobSatis <- ggplot(data = dataYes, aes(JobSatisfaction, fill = Department)) + geom_bar(position = "fill")
-DepVSJobSatis
+## elli 2alo no mo3zamhom bio3odo a2al men 8 hours.
+## elli 2alo yes fi kteer menhom bio3od aktar men 8 hours.
 
-DepVSEnvSatis <- ggplot(data = dataYes, aes(EnvironmentSatisfaction, fill = Department)) + geom_bar(position = "fill")
-DepVSEnvSatis
-
-
-HRDepVSMaritalStatusAndGender <- ggplot(data = dataYes[dataYes$Department == "Human Resources",], aes(MaritalStatus, fill = Gender)) + geom_bar()
-HRDepVSMaritalStatusAndGender
-
-SingleHRDepVsTravel <- ggplot(data = dataYes[dataYes$Department == "Human Resources" & dataYes$MaritalStatus == "Single",], aes(BusinessTravel)) + geom_bar()
-SingleHRDepVsTravel
-
-
-HRDepVSAvgWorkingHrs <- ggplot(data = dataYes[dataYes$Department == "Human Resources",], aes(AverageWorkingHours)) + geom_density()
-HRDepVSAvgWorkingHrs
 ######################## END of Experimental Insights ########################
 
 
