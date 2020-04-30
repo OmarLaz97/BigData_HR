@@ -201,7 +201,7 @@ AttVCurrManager
 
 ######################## Experimental Insights ########################
 # Age vs Gender
-AgeVGender <- ggplot(data = data, aes(x = Gender, y = Age)) + geom_boxplot(aes(fill = Gender))
+AgeVGender <- ggplot(data = data, aes(Age)) + geom_bar(aes(fill = Gender),position = "fill")
 AgeVGender
 # BusinessTravel Vs Age & Gender
 TravelVAgeAndGender <- ggplot(data = data, aes(x = BusinessTravel, y = Age)) + geom_boxplot(aes(fill = Gender))
@@ -249,24 +249,32 @@ EducFieldVDep
 
 dataYes$JobSatisfaction <- as.factor(dataYes$JobSatisfaction)
 dataYes$EnvironmentSatisfaction <- as.factor(dataYes$EnvironmentSatisfaction)
+dataYes$WorkLifeBalance <- as.factor(dataYes$WorkLifeBalance)
 
-singleTravelWithJS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Single", ], aes(BusinessTravel, fill = JobSatisfaction)) + geom_bar(position = "fill")
-singleTravelWithJS
+data$JobSatisfaction <- as.factor(data$JobSatisfaction)
+data$EnvironmentSatisfaction <- as.factor(data$EnvironmentSatisfaction)
+data$WorkLifeBalance <- as.factor(data$WorkLifeBalance)
 
-singleTravelWithEnvS <- ggplot(data = dataYes[dataYes$MaritalStatus == "Single", ], aes(BusinessTravel, fill = EnvironmentSatisfaction)) + geom_bar(position = "fill")
-singleTravelWithEnvS
+dataNo$JobSatisfaction <- as.factor(dataNo$JobSatisfaction)
+dataNo$EnvironmentSatisfaction <- as.factor(dataNo$EnvironmentSatisfaction)
+dataNo$WorkLifeBalance <- as.factor(dataNo$WorkLifeBalance)
 
-FemalesWithDistanceAndEnvS <- ggplot(data = dataYes[dataYes$Gender == "Female" , ], aes(DistanceFromHome, color = EnvironmentSatisfaction)) + geom_boxplot()
-FemalesWithDistanceAndEnvS
+### ma3anaaaaaaaaa ###
+FemalesYWithDistanceAndEnvS <- ggplot(data = dataYes[dataYes$Gender == "Female" , ], aes(y = DistanceFromHome, x = EnvironmentSatisfaction,color= EnvironmentSatisfaction)) + geom_boxplot()
+FemalesYWithDistanceAndEnvS
 
-FemalesSingleAndJS <- ggplot(data = dataYes[dataYes$Gender == "Female" & dataYes$MaritalStatus == "Single", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
-FemalesSingleAndJS
+FemalesNWithDistanceAndEnvS <- ggplot(data = dataNo[dataNo$Gender == "Female" , ], aes(y = DistanceFromHome, x = EnvironmentSatisfaction,color= EnvironmentSatisfaction)) + geom_boxplot()
+FemalesNWithDistanceAndEnvS
 
-FemalesMarriedAndJS <- ggplot(data = dataYes[dataYes$Gender == "Female" & dataYes$MaritalStatus == "Married", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
-FemalesMarriedAndJS
+MalesWithDistanceAndEnvS <- ggplot(data = data[data$Gender == "Male" , ], aes(y = DistanceFromHome, color = EnvironmentSatisfaction)) + geom_boxplot()
+MalesWithDistanceAndEnvS
 
-FemalesDivorcedAndJS <- ggplot(data = dataYes[dataYes$Gender == "Female" & dataYes$MaritalStatus == "Divorced", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
-FemalesDivorcedAndJS
+
+YearsVsIncome <- ggplot(data = data, aes(y = MonthlyIncome,x=YearsAtCompany)) +geom_point()
+YearsVsIncome
+
+
+### ma3anaaaaaaaaa ###
 
 MarriedMalesAndincomeAndJS <- ggplot(data = dataYes[dataYes$Gender == "Male" & dataYes$MaritalStatus == "Married", ], aes(AverageWorkingHours, color = JobSatisfaction)) + geom_boxplot()
 MarriedMalesAndincomeAndJS
