@@ -307,3 +307,13 @@ FemalesNWithDistanceAndEnvS+stat_summary(fun.y=mean, geom="point", shape=20, siz
 MalesWithDistanceAndEnvS <- ggplot(data = data[data$Gender == "Male" , ], aes(y = DistanceFromHome, x = EnvironmentSatisfaction, color = EnvironmentSatisfaction)) + geom_boxplot()
 MalesWithDistanceAndEnvS+stat_summary(fun.y=mean, geom="point", shape=20, size=3, color="red", fill="red")
 
+# Monthly Income Vs. Job Role
+IncomeVsRole <- ggplot(data = data, aes(y = MonthlyIncome,color= JobRole)) + geom_boxplot()
+IncomeVsRole
+
+# Monthly Income Vs. Department
+IncomeVsDep <- ggplot(data = data, aes(y = MonthlyIncome,color= Department)) + geom_boxplot()
+IncomeVsDep
+
+
+
