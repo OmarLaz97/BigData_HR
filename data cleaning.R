@@ -19,8 +19,12 @@ avgHrs<-rowMeans(hours)
 #removing unnecessary columns
 generalData<-generalData[ , !(names(generalData) %in% c("Over18", "StandardHours","EmployeeCount"))]
 
+#Merge tables
 employeeData<-merge(generalData,employeeSurvey,by="EmployeeID")
 employeeData<-merge(employeeData,managerSurvey, by="EmployeeID")
+#Add average working hours
 employeeData$AverageWorkingHours<-avgHrs
+#Remove NAs
 employeeData<-employeeData[complete.cases(employeeData), ]
+#Export to csv file
 write.csv(employeeData,"employee_data.csv")
