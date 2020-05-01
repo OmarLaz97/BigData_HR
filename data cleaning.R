@@ -1,6 +1,6 @@
 rm(list=ls())
 library(lubridate)
-setwd("C:\\Users\\Maram\\Desktop\\Big data\\hr-analytics-case-study")
+#Set the working directory to the folder that contains the dataset files
 inTime <- read.table("in_time.csv", header=TRUE, sep=",")
 outTime <- read.table("out_time.csv", header=TRUE, sep=",")
 generalData <- read.table("general_data.csv", header=TRUE, sep=",")
