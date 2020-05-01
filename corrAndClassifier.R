@@ -8,7 +8,7 @@ library(car)
 rm(list=ls())
 
 
-data <- read.csv("employee_data.csv")
+TempData <- read.csv("employee_data.csv")
 
 ######################## Correlation ########################
 
@@ -20,8 +20,6 @@ nonCatArr <- c("Age","DistanceFromHome","MonthlyIncome","PercentSalaryHike", "Nu
 # Categorical data to transform to n-1 variables
 CatArray <- c("Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
 
-
-TempData <- data
 
 TempData <- TempData[-c(1)]
 
