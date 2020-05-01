@@ -8,27 +8,29 @@ library(neuralnet)
 rm(list=ls())
 
 
-data <- read.csv("employee_data.csv")
+TempData <- read.csv("employee_data.csv")
 
 # Categorical data to transform to n-1 variables
 CatArray <- c("Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
 
-TempData <- data
+# Shuffle Data
 rows <- sample(nrow(TempData))
-
-# Randomly order data
 TempData <- TempData[rows, ]
 
+# Remove first column (employee ID)
 TempData <- TempData[-c(1)]
 
 #Set Attrition Yes or No to 1 or 0
 TempData$Attrition <- as.numeric(ifelse(TempData$Attrition == "Yes" , 1, 0))
 
-
 #Set Busniess Travel to 0: No travel, 1: rarely, 2: frequently
 TempData$BusinessTravel <- ifelse(TempData$BusinessTravel == "Non-Travel", 0, ifelse(TempData$BusinessTravel == "Travel_Rarely", 1, 2))
+
 #EducFieldScience+EducFieldMarketing+EducFieldMed+EducFieldOther+EducFieldTech+EducFieldTech+JobRoleExec+JobRoleResScienr+JobRoleHR+JobRoleLabTech+JobRoleManager+JobRoleRdir+JobRoleManDir
+# Transform categorical data to n-1 variables
 TempData <- dummy_cols(TempData, select_columns = CatArray, remove_first_dummy = TRUE, remove_selected_columns = TRUE)
+
+# Rename dummy variables cols
 names(TempData)[names(TempData)=="Department_Research & Development"]<-"DepRes"
 names(TempData)[names(TempData)=="EducationField_Life Sciences"]<-"EducFieldScience"
 names(TempData)[names(TempData)=="EducationField_Marketing"]<-"EducFieldMarketing"
@@ -40,16 +42,14 @@ names(TempData)[names(TempData)=="EducationField_Other"]<-"EducFieldOther"
 names(TempData)[names(TempData)=="JobRole_Human Resources"]<-"JobRoleHR"
 
 
-
-
-# we have 4300 rows: 3010 (70%) training and the rest for testing 
-# Logistic Regression
+# Set max and min for NN
 maxs <- apply(TempData, 2, max)
 mins <- apply(TempData, 2, min)
 
 # Use scale() and convert the resulting matrix to a data frame
 scaled.data <- as.data.frame(scale(TempData,center = mins, scale = maxs - mins))
 
+# we have 4300 rows: 3010 (70%) training and the rest for testing 
 trainingSet <- head(scaled.data, 3010)
 testSet <- tail(scaled.data, nrow(TempData)-3010)
 
@@ -58,12 +58,16 @@ set.seed(2)
 sigmoid = function(x) {
   1 / (1 + exp(-x))
 }
+
+# NN using 2 hidden layers
 NN = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
                   JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 2 ,linear.output = T, act.fct = sigmoid, stepmax = 1e+06)
 
+# NN using 3 hidden layers
 NN2 = neuralnet( formula = Attrition ~ Age +BusinessTravel+ GendMale+DistanceFromHome + Education + 
                    JobLevel+ MonthlyIncome + NumCompaniesWorked + PercentSalaryHike +StockOptionLevel + NumCompaniesWorked + TotalWorkingYears + TrainingTimesLastYear + YearsAtCompany + YearsSinceLastPromotion + YearsWithCurrManager + EnvironmentSatisfaction + JobSatisfaction + WorkLifeBalance + JobInvolvement +PerformanceRating + AverageWorkingHours + Department_Sales+MaritalStatus_Married+JobRole_Manager + MaritalStatus_Single+ DepRes+EducFieldScience+EducFieldMarketing+JobRoleRdir+JobRoleManDir+EducFieldMed+EducFieldOther+JobRoleHR, trainingSet, hidden = 3,stepmax = 1e+06 ,linear.output = T )
 
+# Predict attrition using test set and NN
 newdata1 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
 newdata1$Attrition <- predict (NN,newdata=newdata1,type="response")
 
@@ -76,6 +80,7 @@ accuracy <- 100*(sum(diag(confusionMatrix))/sum(confusionMatrix))
 accuracy
 
 
+# Predict attrition using test set and NN2
 newdata2 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
 newdata2$Attrition <- predict (NN2,newdata=newdata2,type="response")
 
@@ -86,3 +91,4 @@ confusionMatrix
 
 accuracy <- 100*(sum(diag(confusionMatrix))/sum(confusionMatrix))
 accuracy
+

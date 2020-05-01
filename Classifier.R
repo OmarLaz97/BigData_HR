@@ -8,41 +8,34 @@ library(car)
 rm(list=ls())
 
 
-data <- read.csv("employee_data.csv")
+TempData <- read.csv("employee_data.csv")
 
 # Categorical data to transform to n-1 variables
 CatArray <- c("Department", "EducationField", "Gender", "JobRole", "MaritalStatus")
 
-TempData <- data
-
-# Set seed
+# Shuffle Data
 set.seed(42)
-
-# Shuffle row indices: rows
 rows <- sample(nrow(TempData))
-
-# Randomly order data
 TempData <- TempData[rows, ]
 
+# Remove first column (employee ID)
 TempData <- TempData[-c(1)]
 
 #Set Attrition Yes or No to 1 or 0
 TempData$Attrition <- as.numeric(ifelse(TempData$Attrition == "Yes" , 1, 0))
 
-
 #Set Busniess Travel to 0: No travel, 1: rarely, 2: frequently
 TempData$BusinessTravel <- ifelse(TempData$BusinessTravel == "Non-Travel", 0, ifelse(TempData$BusinessTravel == "Travel_Rarely", 1, 2))
 
+# Transform categorical data to n-1 variables
 TempData <- dummy_cols(TempData, select_columns = CatArray, remove_first_dummy = TRUE, remove_selected_columns = TRUE)
 
 
 # we have 4300 rows: 3010 (70%) training and the rest for testing 
-# Logistic Regression
-
 trainingSet <- head(TempData, 3010)
 testSet <- tail(TempData, nrow(TempData)-3010)
 
-
+# Logistic Regression
 basicModel <- glm(Attrition ~.,
                data =trainingSet, family=binomial(link="logit"),
                na.action=na.pass)
@@ -116,6 +109,7 @@ auc = aucObj@y.values[[1]]
 auc   # the auc score: tells you how well the model predicts.
 
 plot(rocObj, main = paste("Area under the curve:", auc))
+
 
 newdata1 <- testSet[ , !(names(TempData) %in% c("Attrition"))]
 newdata1$Attrition <- predict (model2,newdata=newdata1,type="response")
